@@ -2,19 +2,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import PostsExcerpt from "./PostsExcerpt";
 import { fetchPosts, getPostsError, getPostsStatus, selectAllPosts } from "../features/posts/postsSlice";
+import { RootState } from "../store/store";
 
 const PostsList = () => {
+    console.log("from post list====>")
     const dispatch = useDispatch();
+    const postStatus = useSelector((state: RootState) => state.postsSlice.status);
+    const posts = useSelector((state: RootState) => state.postsSlice.posts);
+    const error = useSelector((state: RootState) => state.postsSlice.error);
 
-    const posts = useSelector(selectAllPosts);
-    const postStatus = useSelector(getPostsStatus);
-    const error = useSelector(getPostsError);
+    console.log("post starts");
+    console.log("postStatus", postStatus);
 
     useEffect(() => {
         if (postStatus === 'idle') {
             dispatch(fetchPosts())
         }
     }, [postStatus, dispatch])
+
+    console.log("post End")
 
     let content;
     if (postStatus === 'loading') {
